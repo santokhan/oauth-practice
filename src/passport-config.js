@@ -1,9 +1,13 @@
-import session from "express-session";
 import passport from "passport";
 import passportGoogleOAuth20 from "passport-google-oauth20";
 
 const GoogleStrategy = passportGoogleOAuth20.Strategy
 
+/**
+ * Function to initialize OAoth2.0 
+ * 
+ * It should be invoked on the application start
+ */
 function configure() {
     passport.use(
         new GoogleStrategy(
@@ -14,11 +18,6 @@ function configure() {
             },
             (accessToken, refreshToken, profile, done) => {
                 // Save the user profile to session or database
-                console.log({ accessToken, refreshToken })
-                // session({
-                //     name: "accessToken",
-                // })
-
                 return done(null, profile);
             }
         )

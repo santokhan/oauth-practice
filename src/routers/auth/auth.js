@@ -1,5 +1,4 @@
 import passport from "passport"
-import session from 'express-session'
 import dotenv from "dotenv"
 import { Router } from 'express'
 import passportConfig from '../../passport-config.js'
@@ -9,12 +8,6 @@ dotenv.config()
 passportConfig()
 
 const router = Router()
-
-router.use(session({
-    secret: process.env.MY_SECRET_KEY,
-    resave: false,
-    saveUninitialized: false
-}))
 
 router.use(passport.initialize())
 router.use(passport.session())
