@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGODB_CONNECTION_STRING = 'mongodb+srv://santokhan:726865426@cluster0.eau2v.mongodb.net/test-auth?retryWrites=true&w=majority&appName=Cluster0'
+// const MONGODB_CONNECTION_STRING = 'mongodb+srv://santokhan:726865426@cluster0.eau2v.mongodb.net/test-auth?retryWrites=true&w=majority&appName=Cluster0'
+const MONGODB_CONNECTION_STRING = 'mongodb://localhost:27017/test-auth'
 
 /**
  * Connects to the MongoDB database and initializes the server.

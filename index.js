@@ -25,8 +25,8 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24  // Cookie expiration (e.g., 1 day)
     }
 }));
-app.use(rootRouter)
 app.use(authRouter)
+app.use(rootRouter)
 
 // HTTPS Server
 const options = {

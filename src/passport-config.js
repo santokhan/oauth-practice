@@ -1,5 +1,7 @@
 import passport from "passport";
 import passportGoogleOAuth20 from "passport-google-oauth20";
+import UserModel from "./schemas/user.js";
+import session from "express-session";
 
 const GoogleStrategy = passportGoogleOAuth20.Strategy
 
@@ -14,11 +16,25 @@ function configure() {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: process.env.CALLBACK_URL
+                callbackURL: process.env.CALLBACK_URL,
             },
-            (accessToken, refreshToken, profile, done) => {
+            async (accessToken, refreshToken, profile, done) => {
+                console.log({ accessToken, refreshToken })
                 // Save the user profile to session or database
-                return done(null, profile);
+                try {
+                    const user = await UserModel.findOne({ id: profile.id })
+
+                    if (!user) {
+                        const user = new UserModel(profile);
+                        user.save().then(function () {
+                            console.log("Saved user")
+                        })
+                    }
+
+                    return done(null, profile);
+                } catch (error) {
+                    return done(error, null);
+                }
             }
         )
     )
@@ -27,8 +43,13 @@ function configure() {
         done(null, user);
     });
 
-    passport.deserializeUser((obj, done) => {
-        done(null, obj);
+    passport.deserializeUser(async (obj, done) => {
+        try {
+            const user = await UserModel.findOne({ id: obj.id })
+            done(null, user)
+        } catch (error) {
+            done(error, null);
+        }
     });
 }
 

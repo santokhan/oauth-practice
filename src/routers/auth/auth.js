@@ -22,11 +22,24 @@ router.get(
     }
 )
 
-router.get('/profile', (req, res) => {
+router.get('/dashboard', (req, res) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/');
     }
     res.json(req.user);
 });
+
+router.get('/profile', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/sign-in');
+    }
+    console.log(req.token)
+    console.log(req.accessToken)
+    res.json(req.user);
+});
+
+router.get("/sign-in", function (req, res) {
+    res.send('<a href="/auth/google">Login with Google</a>');
+})
 
 export default router
